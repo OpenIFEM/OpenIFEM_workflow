@@ -3,13 +3,12 @@
 	<Definitions>
 		<AttDef Type="simulation" BaseType="" Unique="ture" Associations="">
 			<ItemDefinitions>
-				<String Name="simulation_type" Label="Simulation Type" NumberOfRequiredValues="1">
-					<DiscreteInfo DefaultIndex="0">
-						<Value Enum="Solid">Solid</Value>
-						<Value Enum="Fluid">Fluid</Value>
-						<Value Enum="FSI">FSI</Value>
-					</DiscreteInfo>
-				</String>
+				<Group Name="simulation_type" Label="Simulation Type" AdvanceLevel="0">
+					<ItemDefinitions>
+						<Void Name="solid" Label="Solid" Optional="true" IsEnabledByDefault="true"/>
+						<Void Name="fluid" Label="Fluid" Optional="true" IsEnabledByDefault="false"/>
+					</ItemDefinitions>
+				</Group>
 				<Int Name="dimensions" Label="Dimensions" NumberOfRequiredValues="1">
 					<DiscreteInfo DefaultIndex="0">
 						<Value Enum="2">2</Value>
@@ -52,9 +51,10 @@
 					</RangeInfo>
 					<DefaultValue>10</DefaultValue>
 				</Double>
-				<Double Name="gravity" Label="Gravity" NumberOfRequiredValues="3">
+				<Double Name="gravity" Label="Gravity" NumberOfRequiredValues="2">
 					<RangeInfo>
-						<Min Inclusive="false">0</Min>
+						<Min Inclusive="true">0</Min>
+						<DefaultValue>0</DefaultValue>
 					</RangeInfo>
 				</Double>
 			</ItemDefinitions>
