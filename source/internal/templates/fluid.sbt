@@ -19,22 +19,6 @@
 						</Int>
 					</ItemDefinitions>
 				</Group>
-				<Group Name="material_properties" Label="Material Properties" AdvanceLevel="0">
-					<ItemDefinitions>
-						<Double Name="dynamic_viscosity" Label="Dynamic Viscosity" NumberOfRequiredValues="1">
-							<RangeInfo>
-								<Min Inclusive="false">0</Min>
-							</RangeInfo>
-							<DefaultValue>1.8e-4</DefaultValue>
-						</Double>
-						<Double Name="density" Label="Density" NumberOfRequiredValues="1">
-							<RangeInfo>
-								<Min Inclusive="false">0</Min>
-							</RangeInfo>
-							<DefaultValue>1.3e-3</DefaultValue>
-						</Double>
-					</ItemDefinitions>
-				</Group>
 				<Group Name="solver_control" Label="Solver Control" AdvanceLevel="0">
 					<ItemDefinitions>
 						<Double Name="grad_div_stabilization" Label="Grad Div Stabilization" NumberOfRequiredValues="1">
@@ -59,6 +43,22 @@
 						</Double>
 					</ItemDefinitions>
 				</Group>
+				<Group Name="material_properties" Label="Material Properties" AdvanceLevel="0">
+					<ItemDefinitions>
+						<Double Name="dynamic_viscosity" Label="Dynamic Viscosity" NumberOfRequiredValues="1">
+							<RangeInfo>
+								<Min Inclusive="false">0</Min>
+							</RangeInfo>
+							<DefaultValue>1.8e-4</DefaultValue>
+						</Double>
+						<Double Name="density" Label="Density" NumberOfRequiredValues="1">
+							<RangeInfo>
+								<Min Inclusive="false">0</Min>
+							</RangeInfo>
+							<DefaultValue>1.3e-3</DefaultValue>
+						</Double>
+					</ItemDefinitions>
+				</Group>
 			</ItemDefinitions>
 		</AttDef>
 		<AttDef Type="fluid_boundary_conditions" Label="Boundary Conditions" BaseType="" Version="0" Unique="true" Abstract="true">
@@ -66,14 +66,22 @@
 				<MembershipMask>edge</MembershipMask>
 			</AssociationsDef>
 		</AttDef>
-		<AttDef Type="dirichlet" Label="Dirichlet" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
+		<AttDef Type="fluid_dirichlet" Label="Dirichlet" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
 			<ItemDefinitions>
-				<Double Name="velocity" Label="Velocity" NumberOfRequiredValues="2" AdvanceLevel="0"></Double>
+				<Double Name="velocity" Label="Velocity" NumberOfRequiredValues="2" AdvanceLevel="0">
+					<ComponentLabels>
+						<Label>x</Label>
+						<Label>y</Label>
+					</ComponentLabels>
+					<DefaultValue>0</DefaultValue>
+				</Double>
 			</ItemDefinitions>
 		</AttDef>
-		<AttDef Type="neumann" Label="Neumann" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
+		<AttDef Type="fluid_neumann" Label="Neumann" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
 			<ItemDefinitions>
-				<Double Name="pressure" Label="Pressure" NumberOfRequiredValues="1" AdvanceLevel="0"></Double>
+				<Double Name="pressure" Label="Pressure" NumberOfRequiredValues="1" AdvanceLevel="0">
+					<DefaultValue>0</DefaultValue>
+				</Double>
 			</ItemDefinitions>
 		</AttDef>
 	</Definitions>
