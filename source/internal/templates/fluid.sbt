@@ -61,5 +61,20 @@
 				</Group>
 			</ItemDefinitions>
 		</AttDef>
+		<AttDef Type="fluid_boundary_conditions" Label="Boundary Conditions" BaseType="" Version="0" Unique="true" Abstract="true">
+			<AssociationsDef Name="fluid_boundary_associations" Version="0" NumberOfRequiredValues="0" Extensible="true">
+				<MembershipMask>edge</MembershipMask>
+			</AssociationsDef>
+		</AttDef>
+		<AttDef Type="dirichlet" Label="Dirichlet" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
+			<ItemDefinitions>
+				<Double Name="velocity" Label="Velocity" NumberOfRequiredValues="2" AdvanceLevel="0"></Double>
+			</ItemDefinitions>
+		</AttDef>
+		<AttDef Type="neumann" Label="Neumann" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
+			<ItemDefinitions>
+				<Double Name="pressure" Label="Pressure" NumberOfRequiredValues="1" AdvanceLevel="0"></Double>
+			</ItemDefinitions>
+		</AttDef>
 	</Definitions>
 </SMTK_AttributeSystem>

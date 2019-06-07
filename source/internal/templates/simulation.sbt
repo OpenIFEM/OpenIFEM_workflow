@@ -54,8 +54,8 @@
 				<Double Name="gravity" Label="Gravity" NumberOfRequiredValues="2">
 					<RangeInfo>
 						<Min Inclusive="true">0</Min>
-						<DefaultValue>0</DefaultValue>
 					</RangeInfo>
+					<DefaultValue>0</DefaultValue>
 				</Double>
 			</ItemDefinitions>
 		</AttDef>

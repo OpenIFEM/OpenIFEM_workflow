@@ -13,13 +13,24 @@
 		</View>
 		<View Type="Instanced" Title="Simulation" Label="Simulation">
 			<InstancedAttributes>
-				<Att Name="simulation-instance" Type="simulation" />
+				<Att Name="simulation" Type="simulation" />
 			</InstancedAttributes>
 		</View>
-		<View Type="Instanced" Title="Fluid" Label="Fluid">
+		<View Type="Group" Title="Fluid" Label="Fluid" TabPosition="North">
+			<Views>
+				<View Title="Fluid parameters" />
+				<View Title="Fluid Boundary Conditions" />
+			</Views>
+		</View>
+		<View Type="Instanced" Title="Fluid parameters" Label="Parameters">
 			<InstancedAttributes>
-				<Att Name="fluid-instance" Type="fluid" />
+				<Att Name="fluid" Type="fluid" />
 			</InstancedAttributes>
+		</View>
+		<View Type="ModelEntity" Title="Fluid Boundary Conditions" ModelEntityFilter="e">
+			<AttributeTypes>
+				<Att Name="fluid_boundary_conditions" Type="fluid_boundary_conditions" />
+			</AttributeTypes>
 		</View>
 	</Views>
 </SMTK_AttributeSystem>
