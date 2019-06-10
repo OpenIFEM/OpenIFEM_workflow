@@ -48,7 +48,7 @@
 							<DefaultValue>8</DefaultValue>
 							<Categories>
 								<Cat>Fluid</Cat>
-    						</Categories>
+							</Categories>
 						</Int>
 						<Double Name="nonlinear_system_tolerance" Label="Nonlinear System Tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>

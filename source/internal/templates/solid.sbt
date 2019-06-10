@@ -2,7 +2,7 @@
 <SMTK_AttributeSystem Version="2">
 	<Categories>
 		<Cat>Solid</Cat>
-  </Categories>
+	</Categories>
 
 	<Definitions>
 		<!-- parameters -->
@@ -17,7 +17,7 @@
 							<DefaultValue>1</DefaultValue>
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
+							</Categories>
 						</Int>
 					</ItemDefinitions>
 				</Group>
@@ -39,7 +39,7 @@
 							<DefaultValue>1</DefaultValue>
 							<Categories>
 								<Cat>Solid</Cat>
-    						</Categories>
+							</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>
@@ -61,7 +61,7 @@
 							<DefaultValue>10</DefaultValue>
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
+							</Categories>
 						</Int>
 						<Double Name="displacement_tolerance" Label="Displacement Tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
@@ -71,7 +71,7 @@
 							<DefaultValue>1e-6</DefaultValue>
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
+							</Categories>
 						</Double>
 						<Double Name="force_tolerance" Label="Force Tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
@@ -81,7 +81,7 @@
 							<DefaultValue>1e-6</DefaultValue>
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
+							</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>
@@ -100,13 +100,13 @@
 						<Void Name="x" label="x" Optional="true" IsEnabledByDefault="false">
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
-    					</Void>
+							</Categories>
+						</Void>
 						<Void Name="y" label="y" Optional="true" IsEnabledByDefault="false">
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
-    					</Void>
+							</Categories>
+						</Void>
 					</ItemDefinitions>
 				</Group>
 			</ItemDefinitions>
@@ -121,7 +121,7 @@
 					<DefaultValue>0</DefaultValue>
 					<Categories>
 						<Cat>Solid</Cat>
-    			</Categories>
+					</Categories>
 				</Double>
 			</ItemDefinitions>
 		</AttDef>
@@ -147,7 +147,7 @@
 					<DefaultValue>0.3</DefaultValue>
 					<Categories>
 						<Cat>Solid</Cat>
-    				</Categories>
+					</Categories>
 				</Double>
 				<Group Name="hyper_elastic_parameters" Label="Hyperelastic Parameters" AdvanceLevel="0">
 					<ItemDefinitions>
@@ -157,7 +157,7 @@
 							</RangeInfo>
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
+							</Categories>
 						</Double>
 						<Double Name="bulk_modulus" Label="Bulk Modulus" Version="0" NumberOfRequiredValues="1">
 							<RangeInfo>
@@ -165,7 +165,7 @@
 							</RangeInfo>
 							<Categories>
 								<Cat>Solid</Cat>
-    					</Categories>
+							</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>

@@ -3,7 +3,7 @@
 	<Categories>
 		<Cat>Fluid</Cat>
 		<Cat>Solid</Cat>
-    </Categories>
+	</Categories>
 
 	<Definitions>
 		<AttDef Type="analysis">
