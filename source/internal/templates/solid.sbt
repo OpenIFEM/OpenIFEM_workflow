@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SMTK_AttributeSystem Version="2">
+<SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Solid</Cat>
 	</Categories>
@@ -172,4 +172,4 @@
 			</ItemDefinitions>
 		</AttDef>
 	</Definitions>
-</SMTK_AttributeSystem>
+</SMTK_AttributeResource>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<SMTK_AttributeSystem Version="2">
+<SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Solid</Cat>
 		<Cat>Fluid</Cat>
@@ -11,7 +11,7 @@
 		<File>internal/templates/solid.sbt</File>
 	</Includes>
 	<Views>
-		<View Type="Group" Name="OpenIFEM" Label="OpenIFEM" TopLevel="true" TabPosition="North" FilterByAdvanceLevel="false">
+		<View Type="Group" Name="OpenIFEM" Label="OpenIFEM" TopLevel="true" TabPosition="North" FilterByCategory="false" FilterByAdvanceLevel="false">
 			<Views>
 				<View Title="Simulation" />
 				<View Title="Fluid" />
@@ -25,10 +25,7 @@
 				<View Title="General" />
 			</Views>
 		</View>
-		<View Type="Instanced" Title="Analysis" Label="Analysis">
-			<InstancedAttributes>
-				<Att Name="analysis" Type="analysis" />
-			</InstancedAttributes>
+		<View Type="Analysis" Title="Analysis" Label="Analysis" AnalysisAttributeName="analysis" AnalysisAttributeType="analysis">
 		</View>
 		<View Type="Instanced" Title="General" Label="General">
 			<InstancedAttributes>
@@ -76,4 +73,4 @@
 			</AttributeTypes>
 		</View>
 	</Views>
-</SMTK_AttributeSystem>
+</SMTK_AttributeResource>

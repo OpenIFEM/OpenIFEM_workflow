@@ -1,31 +1,20 @@
 <?xml version="1.0"?>
-<SMTK_AttributeSystem Version="2">
+<SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Fluid</Cat>
 		<Cat>Solid</Cat>
 	</Categories>
 
+	<Analyses>
+		<Analysis Type="Fluid">
+			<Cat>Fluid</Cat>
+		</Analysis>
+		<Analysis Type="Solid">
+			<Cat>Solid</Cat>
+		</Analysis>
+	</Analyses>
+
 	<Definitions>
-		<AttDef Type="analysis">
-			<ItemDefinitions>
-				<Group Name="simulation_type" Label="Simulation Type" AdvanceLevel="0">
-					<ItemDefinitions>
-						<Void Name="solid" Label="Solid" Optional="true" IsEnabledByDefault="true">
-							<Categories>
-								<Cat>Fluid</Cat>
-								<Cat>Solid</Cat>
-							</Categories>
-						</Void>
-						<Void Name="fluid" Label="Fluid" Optional="true" IsEnabledByDefault="false">
-							<Categories>
-								<Cat>Fluid</Cat>
-								<Cat>Solid</Cat>
-							</Categories>
-						</Void>
-					</ItemDefinitions>
-				</Group>
-			</ItemDefinitions>
-		</AttDef>
 		<AttDef Type="simulation" BaseType="" Unique="ture" Associations="">
 			<ItemDefinitions>
 				<Int Name="dimensions" Label="Dimensions" NumberOfRequiredValues="1">
@@ -111,4 +100,4 @@
 			</ItemDefinitions>
 		</AttDef>
 	</Definitions>
-</SMTK_AttributeSystem>
+</SMTK_AttributeResource>
