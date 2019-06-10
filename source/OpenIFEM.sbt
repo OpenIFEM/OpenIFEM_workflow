@@ -1,12 +1,17 @@
 <?xml version="1.0"?>
 <SMTK_AttributeSystem Version="2">
+	<Categories>
+		<Cat>Solid</Cat>
+		<Cat>Fluid</Cat>
+	</Categories>
+
 	<Includes>
 		<File>internal/templates/simulation.sbt</File>
 		<File>internal/templates/fluid.sbt</File>
 		<File>internal/templates/solid.sbt</File>
 	</Includes>
 	<Views>
-		<View Type="Group" Name="OpenIFEM" Label="OpenIFEM" TopLevel="true" TabPosition="North" FilterByCategory="false" FilterByAdvanceLevel="false">
+		<View Type="Group" Name="OpenIFEM" Label="OpenIFEM" TopLevel="true" TabPosition="North" FilterByAdvanceLevel="false">
 			<Views>
 				<View Title="Simulation" />
 				<View Title="Fluid" />
@@ -14,7 +19,18 @@
 			</Views>
 		</View>
 		<!-- Simulation session -->
-		<View Type="Instanced" Title="Simulation" Label="Simulation">
+		<View Type="Group" Title="Simulation" Label="Simulation" Style="Tiled">
+			<Views>
+				<View Title="Analysis" />
+				<View Title="General" />
+			</Views>
+		</View>
+		<View Type="Instanced" Title="Analysis" Label="Analysis">
+			<InstancedAttributes>
+				<Att Name="analysis" Type="analysis" />
+			</InstancedAttributes>
+		</View>
+		<View Type="Instanced" Title="General" Label="General">
 			<InstancedAttributes>
 				<Att Name="simulation" Type="simulation" />
 			</InstancedAttributes>

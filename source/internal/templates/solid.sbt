@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <SMTK_AttributeSystem Version="2">
+	<Categories>
+		<Cat>Solid</Cat>
+  </Categories>
+
 	<Definitions>
 		<!-- parameters -->
 		<AttDef Type="solid" BaseType="" Unique="ture" Associations="">
@@ -11,6 +15,9 @@
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
 							<DefaultValue>1</DefaultValue>
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
 						</Int>
 					</ItemDefinitions>
 				</Group>
@@ -21,12 +28,18 @@
 								<Value Enum="LinearElastic">LinearElastic</Value>
 								<Value Enum="NeoHookean">NeoHookean</Value>
 							</DiscreteInfo>
+							<Categories>
+								<Cat>Solid</Cat>
+							</Categories>
 						</String>
 						<Double Name="global_density" Label="Global Density">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
 							<DefaultValue>1</DefaultValue>
+							<Categories>
+								<Cat>Solid</Cat>
+    						</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>
@@ -37,12 +50,18 @@
 								<Min Inclusive="true">0</Min>
 							</RangeInfo>
 							<DefaultValue>0</DefaultValue>
+							<Categories>
+								<Cat>Solid</Cat>
+							</Categories>
 						</Double>
 						<Int Name="max_newton_iterations" Label="Max Newton Iterations" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
 							<DefaultValue>10</DefaultValue>
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
 						</Int>
 						<Double Name="displacement_tolerance" Label="Displacement Tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
@@ -50,6 +69,9 @@
 								<Max Inclusive="false">1</Max>
 							</RangeInfo>
 							<DefaultValue>1e-6</DefaultValue>
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
 						</Double>
 						<Double Name="force_tolerance" Label="Force Tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
@@ -57,6 +79,9 @@
 								<Max Inclusive="false">1</Max>
 							</RangeInfo>
 							<DefaultValue>1e-6</DefaultValue>
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>
@@ -72,8 +97,16 @@
 			<ItemDefinitions>
 				<Group Name="directions" Label="Directions" AdvanceLevel="0">
 					<ItemDefinitions>
-						<Void Name="x" label="x" Optional="true" IsEnabledByDefault="false"/>
-						<Void Name="y" label="y" Optional="true" IsEnabledByDefault="false"/>
+						<Void Name="x" label="x" Optional="true" IsEnabledByDefault="false">
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
+    					</Void>
+						<Void Name="y" label="y" Optional="true" IsEnabledByDefault="false">
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
+    					</Void>
 					</ItemDefinitions>
 				</Group>
 			</ItemDefinitions>
@@ -86,6 +119,9 @@
 						<Label>y</Label>
 					</ComponentLabels>
 					<DefaultValue>0</DefaultValue>
+					<Categories>
+						<Cat>Solid</Cat>
+    			</Categories>
 				</Double>
 			</ItemDefinitions>
 		</AttDef>
@@ -99,6 +135,9 @@
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>
+					<Categories>
+						<Cat>Solid</Cat>
+					</Categories>
 				</Double>
 				<Double Name="poissons_ratio" Label="Poisson's Ratio" Version="0">
 					<RangeInfo>
@@ -106,6 +145,9 @@
 						<Max Inclusive="false">0.5</Max>
 					</RangeInfo>
 					<DefaultValue>0.3</DefaultValue>
+					<Categories>
+						<Cat>Solid</Cat>
+    				</Categories>
 				</Double>
 				<Group Name="hyper_elastic_parameters" Label="Hyperelastic Parameters" AdvanceLevel="0">
 					<ItemDefinitions>
@@ -113,11 +155,17 @@
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
 						</Double>
 						<Double Name="bulk_modulus" Label="Bulk Modulus" Version="0" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
+							<Categories>
+								<Cat>Solid</Cat>
+    					</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>

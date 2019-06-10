@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <SMTK_AttributeSystem Version="2">
+	<Categories>
+		<Cat>Fluid</Cat>
+	</Categories>
+
 	<Definitions>
 		<AttDef Type="fluid" BaseType="" Unique="ture" Associations="">
 			<ItemDefinitions>
@@ -10,12 +14,18 @@
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
 							<DefaultValue>1</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
 						</Int>
 						<Int Name="velocity_degree" Label="Velocity Degree" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
 							<DefaultValue>1</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
 						</Int>
 					</ItemDefinitions>
 				</Group>
@@ -27,12 +37,18 @@
 								<Max Inclusive="true">1</Max>
 							</RangeInfo>
 							<DefaultValue>0.1</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
 						</Double>
 						<Int Name="max_newton_iterations" Label="Max Newton Iterations" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
 							<DefaultValue>8</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+    						</Categories>
 						</Int>
 						<Double Name="nonlinear_system_tolerance" Label="Nonlinear System Tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
@@ -40,6 +56,9 @@
 								<Max Inclusive="false">1</Max>
 							</RangeInfo>
 							<DefaultValue>1e-6</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>
@@ -50,12 +69,18 @@
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
 							<DefaultValue>1.8e-4</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
 						</Double>
 						<Double Name="density" Label="Density" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
 							<DefaultValue>1.3e-3</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
 						</Double>
 					</ItemDefinitions>
 				</Group>
@@ -74,6 +99,9 @@
 						<Label>y</Label>
 					</ComponentLabels>
 					<DefaultValue>0</DefaultValue>
+					<Categories>
+						<Cat>Fluid</Cat>
+					</Categories>
 				</Double>
 			</ItemDefinitions>
 		</AttDef>
@@ -81,6 +109,9 @@
 			<ItemDefinitions>
 				<Double Name="pressure" Label="Pressure" NumberOfRequiredValues="1" AdvanceLevel="0">
 					<DefaultValue>0</DefaultValue>
+					<Categories>
+						<Cat>Fluid</Cat>
+					</Categories>
 				</Double>
 			</ItemDefinitions>
 		</AttDef>
