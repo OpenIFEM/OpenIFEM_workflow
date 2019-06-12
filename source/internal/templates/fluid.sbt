@@ -9,7 +9,7 @@
 			<ItemDefinitions>
 				<Group Name="fe_system" Label="FE system" AdvanceLevel="0">
 					<ItemDefinitions>
-						<Int Name="pressure_degree" Label="Pressure Degree" NumberOfRequiredValues="1">
+						<Int Name="pressure_degree" Label="Pressure degree" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
@@ -18,7 +18,7 @@
 								<Cat>Fluid</Cat>
 							</Categories>
 						</Int>
-						<Int Name="velocity_degree" Label="Velocity Degree" NumberOfRequiredValues="1">
+						<Int Name="velocity_degree" Label="Velocity degree" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
@@ -31,7 +31,7 @@
 				</Group>
 				<Group Name="solver_control" Label="Solver Control" AdvanceLevel="0">
 					<ItemDefinitions>
-						<Double Name="grad_div_stabilization" Label="Grad Div Stabilization" NumberOfRequiredValues="1">
+						<Double Name="grad_div_stabilization" Label="Grad-Div stabilization" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">0</Min>
 								<Max Inclusive="true">1</Max>
@@ -41,7 +41,7 @@
 								<Cat>Fluid</Cat>
 							</Categories>
 						</Double>
-						<Int Name="max_newton_iterations" Label="Max Newton Iterations" NumberOfRequiredValues="1">
+						<Int Name="max_newton_iterations" Label="Max Newton iterations" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
@@ -50,7 +50,7 @@
 								<Cat>Fluid</Cat>
 							</Categories>
 						</Int>
-						<Double Name="nonlinear_system_tolerance" Label="Nonlinear System Tolerance" NumberOfRequiredValues="1">
+						<Double Name="nonlinear_system_tolerance" Label="Nonlinear system tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 								<Max Inclusive="false">1</Max>
@@ -64,7 +64,7 @@
 				</Group>
 				<Group Name="material_properties" Label="Material Properties" AdvanceLevel="0">
 					<ItemDefinitions>
-						<Double Name="dynamic_viscosity" Label="Dynamic Viscosity" NumberOfRequiredValues="1">
+						<Double Name="dynamic_viscosity" Label="Dynamic viscosity" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
@@ -73,7 +73,7 @@
 								<Cat>Fluid</Cat>
 							</Categories>
 						</Double>
-						<Double Name="density" Label="Density" NumberOfRequiredValues="1">
+						<Double Name="fluid_density" Label="Fluid density" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>

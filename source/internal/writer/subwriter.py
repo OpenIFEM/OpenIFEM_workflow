@@ -26,6 +26,7 @@ class subsection:
         pass
 
     def generate_regular_property(self, item_path, parent_att):
+        print('Reading {}...\n'.format(item_path))
         item = parent_att.itemAtPath(item_path, '/')
         # Look for number of values
         n_values = item.numberOfValues()
@@ -59,11 +60,11 @@ class simulation_subsection(subsection):
         self.analysis |= (solid_analysis * analysis_att.findVoid('Solid').isEnabled()
                           ) | (fluid_analysis * analysis_att.findVoid('Fluid').isEnabled())
         # Determine whether it is a FSI, Solid or Fluid simulation
-        if (self.analysis & (solid_analysis | fluid_analysis)):
+        if ((self.analysis & solid_analysis) and (self.analysis & fluid_analysis)):
             self.properties.append(property('Simulation type', 'FSI'))
         elif (self.analysis & solid_analysis):
             self.properties.append(property('Simulation type', 'Solid'))
-        elif (self.analysis & solid_analysis):
+        elif (self.analysis & fluid_analysis):
             self.properties.append(property('Simulation type', 'Fluid'))
         '''
         '''
@@ -85,3 +86,40 @@ class simulation_subsection(subsection):
         self.generate_regular_property('save_interval', simulation_att)
         # Gravity
         self.generate_regular_property('gravity', simulation_att)
+
+
+class fluid_FE_subsection(subsection):
+    def cache_properties(self):
+        # Get simulation parameters attribute
+        fluid_att = self.sim_atts.findAttribute('fluid')
+        # Pressure degree
+        self.generate_regular_property('fe_system/pressure_degree', fluid_att)
+        # Velocity degree
+        self.generate_regular_property('fe_system/velocity_degree', fluid_att)
+
+
+class fluid_material_subsection(subsection):
+    def cache_properties(self):
+        # Get simulation parameters attribute
+        fluid_att = self.sim_atts.findAttribute('fluid')
+        # Dynamic viscosity
+        self.generate_regular_property(
+            'material_properties/dynamic_viscosity', fluid_att)
+        # Density
+        self.generate_regular_property(
+            'material_properties/fluid_density', fluid_att)
+
+
+class fluid_sc_subsection(subsection):
+    def cache_properties(self):
+        # Get simulation parameters attribute
+        fluid_att = self.sim_atts.findAttribute('fluid')
+        # Grad-Div stabilization
+        self.generate_regular_property(
+            'solver_control/grad_div_stabilization', fluid_att)
+        # Max Newton iterations
+        self.generate_regular_property(
+            'solver_control/max_newton_iterations', fluid_att)
+        # Nonlinear system tolerance
+        self.generate_regular_property(
+            'solver_control/nonlinear_system_tolerance', fluid_att)

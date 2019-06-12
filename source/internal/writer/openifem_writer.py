@@ -26,11 +26,12 @@ class OpenIFEMWriter:
         self.subsections = list()
         self.subsections.append(
             subwriter.simulation_subsection('Simulation', self.sim_atts))
-        # self.subsections.append(subsection(
-        #     'Fluid finite element system', 'fluid'))
-        # self.subsections.append(subsection(
-        #     'Fluid material properties', 'fluid'))
-        # self.subsections.append(subsection('Fluid solver control', 'fluid'))
+        self.subsections.append(subwriter.fluid_FE_subsection(
+            'Fluid finite element system', self.sim_atts))
+        self.subsections.append(subwriter.fluid_material_subsection(
+            'Fluid material properties', self.sim_atts))
+        self.subsections.append(subwriter.fluid_sc_subsection(
+            'Fluid solver control', self.sim_atts))
         # self.subsections.append(subsection(
         #     'Fluid Dirichlet BCs', 'fluid_dirichlet'))
         # self.subsections.append(subsection(
