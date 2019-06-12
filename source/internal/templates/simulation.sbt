@@ -1,10 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Fluid</Cat>
 		<Cat>Solid</Cat>
 	</Categories>
-
+	
 	<Analyses>
 		<Analysis Type="Fluid">
 			<Cat>Fluid</Cat>
@@ -13,11 +13,11 @@
 			<Cat>Solid</Cat>
 		</Analysis>
 	</Analyses>
-
+	
 	<Definitions>
 		<AttDef Type="simulation" BaseType="" Unique="ture" Associations="">
 			<ItemDefinitions>
-				<Int Name="dimensions" Label="Dimensions" NumberOfRequiredValues="1">
+				<Int Name="dimension" Label="Dimension" NumberOfRequiredValues="1">
 					<DiscreteInfo DefaultIndex="0">
 						<Value Enum="2">2</Value>
 						<Value Enum="3">3</Value>
@@ -27,7 +27,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Int>
-				<Int Name="global_refinements" Label="Global Refinements" NumberOfRequiredValues="2">
+				<Int Name="global_refinements" Label="Global refinements" NumberOfRequiredValues="2">
 					<RangeInfo>
 						<Min Inclusive="true">0</Min>
 					</RangeInfo>
@@ -37,7 +37,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Int>
-				<Double Name="end_time" Label="End Time" NumberOfRequiredValues="1">
+				<Double Name="end_time" Label="End time" NumberOfRequiredValues="1">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>
@@ -47,7 +47,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Double>
-				<Double Name="time_step_size" Label="Time Step Size" NumberOfRequiredValues="1">
+				<Double Name="time_step_size" Label="Time step size" NumberOfRequiredValues="1">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>
@@ -57,7 +57,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Double>
-				<Double Name="output_interval" Label="Output Interval" NumberOfRequiredValues="1">
+				<Double Name="output_interval" Label="Output interval" NumberOfRequiredValues="1">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>
@@ -67,7 +67,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Double>
-				<Double Name="refinement_interval" Label="Refinement Interval" NumberOfRequiredValues="1">
+				<Double Name="refinement_interval" Label="Refinement interval" NumberOfRequiredValues="1">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>
@@ -77,7 +77,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Double>
-				<Double Name="Save_interval" Label="Save Interval" NumberOfRequiredValues="1">
+				<Double Name="save_interval" Label="Save interval" NumberOfRequiredValues="1">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>

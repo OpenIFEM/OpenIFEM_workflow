@@ -1,10 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Solid</Cat>
 		<Cat>Fluid</Cat>
 	</Categories>
-
+	
 	<Includes>
 		<File>internal/templates/simulation.sbt</File>
 		<File>internal/templates/fluid.sbt</File>

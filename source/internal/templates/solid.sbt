@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Solid</Cat>
 	</Categories>
-
+	
 	<Definitions>
 		<!-- parameters -->
 		<AttDef Type="solid" BaseType="" Unique="ture" Associations="">

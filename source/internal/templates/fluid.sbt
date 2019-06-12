@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <SMTK_AttributeResource Version="3">
 	<Categories>
 		<Cat>Fluid</Cat>
 	</Categories>
-
+	
 	<Definitions>
 		<AttDef Type="fluid" BaseType="" Unique="ture" Associations="">
 			<ItemDefinitions>
