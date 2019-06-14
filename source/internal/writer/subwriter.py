@@ -183,6 +183,7 @@ class fluid_dirichlet_subsection(entity_subsection):
         self.properties.append(property('Dirichlet boundary id', string_ids))
         string_components = " ".join("{}, ".format(i) for i in bc_components)
         string_components = string_components[:-2]
+        string_components = "3" if not string_components else string_components
         self.properties.append(
             property('Dirichlet boundary components', string_components))
         bc_values = bc_values[:-2]
@@ -335,7 +336,7 @@ class solid_dirichlet_subsection(entity_subsection):
         self.properties.append(property('Dirichlet boundary id', string_ids))
         string_components = " ".join("{}, ".format(i) for i in bc_components)
         string_components = string_components[:-2]
-        string_components = '0' if not string_components else string_components
+        string_components = '3' if not string_components else string_components
         self.properties.append(
             property('Dirichlet boundary components', string_components))
 
@@ -374,6 +375,6 @@ class solid_neumann_subsection(entity_subsection):
         # Only support traction right now
         self.properties.append(property('Neumann boundary type', 'Traction'))
         bc_values = bc_values[:-2]
-        bc_values = "0" if not bc_values else bc_values
+        bc_values = "0, 0" if not bc_values else bc_values
         self.properties.append(
             property('Neumann boundary values', bc_values))
