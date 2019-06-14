@@ -40,15 +40,16 @@ class OpenIFEMWriter:
             'Fluid Dirichlet BCs', self.sim_atts, self.model_resource))
         self.subsections.append(subwriter.fluid_neumann_subsection(
             'Fluid Neumann BCs', self.sim_atts, self.model_resource))
-        # self.subsections.append(subsection(
-        #     'Solid finite element system', 'solid'))
-        # self.subsections.append(subsection('Solid solver control', 'solid'))
-        # self.subsections.append(subsection(
-        #     'Solid material properties', 'solid'))
-        # self.subsections.append(subsection(
-        #     'Solid Dirichlet BCs', 'solid_dirichilet'))
-        # self.subsections.append(subsection(
-        #     'Solid Neumann BCs', 'solid_neumann'))
+        self.subsections.append(subwriter.solid_FE_subsection(
+            'Solid finite element system', self.sim_atts))
+        self.subsections.append(subwriter.solid_material_subsecion(
+            'Solid material properties', self.sim_atts, self.model_resource))
+        self.subsections.append(subwriter.solid_sc_subsection(
+            'Solid solver control', self.sim_atts))
+        self.subsections.append(subwriter.solid_dirichlet_subsection(
+            'Solid Dirichlet BCs', self.sim_atts, self.model_resource))
+        self.subsections.append(subwriter.solid_neumann_subsection(
+            'Solid Neumann BCs', self.sim_atts, self.model_resource))
 
     def cache_properties(self):
         for sec in self.subsections:

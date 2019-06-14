@@ -23,7 +23,7 @@
 				</Group>
 				<Group Name="material_properties" Label="Material Properties" AdvanceLevel="0">
 					<ItemDefinitions>
-						<String Name="solid_type" Label="Solid Type" NumberOfRequiredValues="1">
+						<String Name="solid_type" Label="Solid type" NumberOfRequiredValues="1">
 							<DiscreteInfo DefaultIndex="0">
 								<Value Enum="LinearElastic">LinearElastic</Value>
 								<Value Enum="NeoHookean">NeoHookean</Value>
@@ -32,7 +32,7 @@
 								<Cat>Solid</Cat>
 							</Categories>
 						</String>
-						<Double Name="global_density" Label="Global Density">
+						<Double Name="solid_density" Label="Solid density">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
@@ -54,7 +54,7 @@
 								<Cat>Solid</Cat>
 							</Categories>
 						</Double>
-						<Int Name="max_newton_iterations" Label="Max Newton Iterations" NumberOfRequiredValues="1">
+						<Int Name="max_newton_iterations" Label="Max Newton iterations" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="true">1</Min>
 							</RangeInfo>
@@ -63,7 +63,7 @@
 								<Cat>Solid</Cat>
 							</Categories>
 						</Int>
-						<Double Name="displacement_tolerance" Label="Displacement Tolerance" NumberOfRequiredValues="1">
+						<Double Name="displacement_tolerance" Label="Displacement tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 								<Max Inclusive="false">1</Max>
@@ -73,7 +73,7 @@
 								<Cat>Solid</Cat>
 							</Categories>
 						</Double>
-						<Double Name="force_tolerance" Label="Force Tolerance" NumberOfRequiredValues="1">
+						<Double Name="force_tolerance" Label="Force tolerance" NumberOfRequiredValues="1">
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 								<Max Inclusive="false">1</Max>
@@ -131,7 +131,7 @@
 				<MembershipMask>face</MembershipMask>
 			</AssociationsDef>
 			<ItemDefinitions>
-				<Double Name="youngs_modulus" Label="Young's Modulus" Version="0">
+				<Double Name="youngs_modulus" Label="Young's modulus" Version="0">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 					</RangeInfo>
@@ -139,7 +139,7 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Double>
-				<Double Name="poissons_ratio" Label="Poisson's Ratio" Version="0">
+				<Double Name="poissons_ratio" Label="Poisson's ratio" Version="0">
 					<RangeInfo>
 						<Min Inclusive="false">0</Min>
 						<Max Inclusive="false">0.5</Max>
@@ -149,9 +149,12 @@
 						<Cat>Solid</Cat>
 					</Categories>
 				</Double>
-				<Group Name="hyper_elastic_parameters" Label="Hyperelastic Parameters" AdvanceLevel="0">
+				<Group Name="hyper_elastic_parameters" Label="Hyperelastic parameters" AdvanceLevel="0">
 					<ItemDefinitions>
-						<Double Name="shear_modulus" Label="Shear Modulus" Version="0" NumberOfRequiredValues="1">
+						<Double Name="C1" Label="Shear Modulus" Version="0" NumberOfRequiredValues="1">
+							<BriefDescription>
+								C1 parameter. Equal to half of the shear modulus
+							</BriefDescription>
 							<RangeInfo>
 								<Min Inclusive="false">0</Min>
 							</RangeInfo>
