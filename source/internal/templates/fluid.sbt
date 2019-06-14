@@ -91,21 +91,27 @@
 				<MembershipMask>edge</MembershipMask>
 			</AssociationsDef>
 		</AttDef>
-		<AttDef Type="fluid_dirichlet" Label="Dirichlet" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
+		<AttDef Type="fluid_dirichlet" Label="Fluid Dirichlet BCs" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
 			<ItemDefinitions>
-				<Double Name="velocity" Label="Velocity" NumberOfRequiredValues="2" AdvanceLevel="0">
-					<ComponentLabels>
-						<Label>x</Label>
-						<Label>y</Label>
-					</ComponentLabels>
-					<DefaultValue>0</DefaultValue>
-					<Categories>
-						<Cat>Fluid</Cat>
-					</Categories>
-				</Double>
+				<Group Name="velocity" Label="Velocity" NumberOfRequiredValues="1" AdvanceLevel="0">
+					<ItemDefinitions>
+						<Double Name="x" Label="x" NumberOfRequiredValues="1" AdvanceLevel="0" Optional="true" IsEnabledByDefault="false">
+							<DefaultValue>0</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
+						</Double>
+						<Double Name="y" Label="y" NumberOfRequiredValues="1" AdvanceLevel="0" Optional="true" IsEnabledByDefault="false">
+							<DefaultValue>0</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
+						</Double>
+					</ItemDefinitions>
+				</Group>
 			</ItemDefinitions>
 		</AttDef>
-		<AttDef Type="fluid_neumann" Label="Neumann" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
+		<AttDef Type="fluid_neumann" Label="Fluid Neumann BCs" BaseType="fluid_boundary_conditions" Version="0" Unique="true">
 			<ItemDefinitions>
 				<Double Name="pressure" Label="Pressure" NumberOfRequiredValues="1" AdvanceLevel="0">
 					<DefaultValue>0</DefaultValue>

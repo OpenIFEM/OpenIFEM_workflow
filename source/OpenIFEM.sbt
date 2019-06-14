@@ -44,7 +44,7 @@
 				<Att Name="fluid" Type="fluid" />
 			</InstancedAttributes>
 		</View>
-		<View Type="ModelEntity" Title="Fluid Boundary Conditions" ModelEntityFilter="e">
+		<View Type="Attribute" Title="Fluid Boundary Conditions" ModelEntityFilter="e">
 			<AttributeTypes>
 				<Att Name="fluid_boundary_conditions" Type="fluid_boundary_conditions" />
 			</AttributeTypes>
@@ -62,7 +62,7 @@
 				<Att Name="solid" Type="solid" />
 			</InstancedAttributes>
 		</View>
-		<View Type="ModelEntity" Title="Solid Boundary Conditions" ModelEntityFilter="e">
+		<View Type="Attribute" Title="Solid Boundary Conditions" ModelEntityFilter="e">
 			<AttributeTypes>
 				<Att Name="solid_boundary_conditions" Type="solid_boundary_conditions" />
 			</AttributeTypes>

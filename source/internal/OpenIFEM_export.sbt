@@ -10,6 +10,11 @@
                 operation will write a OpenIFEM input file to the specified location.
             </DetailedDescription>
             <ItemDefinitions>
+                <Component Name="model" Label="Model" LockType="DoNotLock">
+                    <Accepts>
+                        <Resource Name="smtk::model::Resource" Filter="model" />
+                    </Accepts>
+                </Component>
                 <Resource Name="attributes" Label="Attributes" LockType="DoNotLock">
                     <Accepts>
                         <Resource Name="smtk::attribute::Resource" />
