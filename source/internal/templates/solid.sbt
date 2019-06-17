@@ -93,7 +93,7 @@
 				<MembershipMask>edge</MembershipMask>
 			</AssociationsDef>
 		</AttDef>
-		<AttDef Type="solid_dirichilet" Label="Dirichlet (Fixed)" BaseType="solid_boundary_conditions" Version="0" Unique="true">
+		<AttDef Type="solid_dirichlet" Label="Dirichlet (Fixed)" BaseType="solid_boundary_conditions" Version="0" Unique="true">
 			<ItemDefinitions>
 				<Group Name="directions" Label="Directions" AdvanceLevel="0">
 					<ItemDefinitions>
@@ -151,7 +151,7 @@
 				</Double>
 				<Group Name="hyper_elastic_parameters" Label="Hyperelastic parameters" AdvanceLevel="0">
 					<ItemDefinitions>
-						<Double Name="C1" Label="Shear Modulus" Version="0" NumberOfRequiredValues="1">
+						<Double Name="C1" Label="C1" Version="0" NumberOfRequiredValues="1">
 							<BriefDescription>
 								C1 parameter. Equal to half of the shear modulus
 							</BriefDescription>

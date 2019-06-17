@@ -321,8 +321,8 @@ class solid_dirichlet_subsection(entity_subsection):
                 bc_ids.append(idlist[0])
             n_bcs += sub_n_bcs
             # Get the components and values
-            item_x = bc_att.itemAtPath('x', '/')
-            item_y = bc_att.itemAtPath('y', '/')
+            item_x = bc_att.itemAtPath('directions/x', '/')
+            item_y = bc_att.itemAtPath('directions/y', '/')
             components = 0x0
             components |= x_component * item_x.isEnabled() | y_component * \
                 item_y.isEnabled()
