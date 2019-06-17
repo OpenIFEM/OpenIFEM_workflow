@@ -146,6 +146,9 @@ class fluid_dirichlet_subsection(entity_subsection):
         # Every BC is an individual attribute, need to put them in a list
         fluid_bc_atts = self.sim_atts.findAttributes(
             'fluid_dirichlet')
+        # Don't write anything if there is no bc at all
+        if not fluid_bc_atts:
+            return
         for bc_att in fluid_bc_atts:
             # Here sub_n_bcs is the number of boundaries
             # assigned to this BC
@@ -200,6 +203,9 @@ class fluid_neumann_subsection(entity_subsection):
         # Every BC is an individual attribute, need to put them in a list
         fluid_bc_atts = self.sim_atts.findAttributes(
             'fluid_neumann')
+        # Don't write anything if there is no bc at all
+        if not fluid_bc_atts:
+            return
         for bc_att in fluid_bc_atts:
             # Here sub_n_bcs is the number of boundaries
             # assigned to this BC
@@ -307,6 +313,9 @@ class solid_dirichlet_subsection(entity_subsection):
         # Every BC is an individual attribute, need to put them in a list
         solid_bc_atts = self.sim_atts.findAttributes(
             'solid_dirichlet')
+        # Don't write anything if there is no bc at all
+        if not solid_bc_atts:
+            return
         for bc_att in solid_bc_atts:
             # Here sub_n_bcs is the number of boundaries
             # assigned to this BC
@@ -350,6 +359,9 @@ class solid_neumann_subsection(entity_subsection):
         # Every BC is an individual attribute, need to put them in a list
         solid_bc_atts = self.sim_atts.findAttributes(
             'solid_neumann')
+        # Don't write anything if there is no bc at all
+        if not solid_bc_atts:
+            return
         for bc_att in solid_bc_atts:
             # Here sub_n_bcs is the number of boundaries
             # assigned to this BC
