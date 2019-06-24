@@ -95,15 +95,13 @@ def InitializeOpenIFEM(init_op):
         mesh_resource = smtk.mesh.Resource.create()
         resource.setSession(session)
 
-        meshes = mesh_resource.meshes()
         # Get the mesh resource from file
         print('Load file from {}'.format(solid_model_item.value(0)))
         smtk.io.importMesh(
             solid_filepath, mesh_resource, 'Solid')
+        meshes = mesh_resource.meshes()
         if not mesh_resource or not mesh_resource.isValid():
             print('FAILED!\n')
-        print('mesh_resource: %s' % mesh_resource)
-        print('dir(mesh_resource): %s' % dir(mesh_resource))
         # try:
         #     mesh_resource.setName('Solid')
         # except:
@@ -112,33 +110,43 @@ def InitializeOpenIFEM(init_op):
         # resource.setName('Solid')
         mesh_resource.modelResource = resource
         resource.setMeshTessellations(mesh_resource)
+
         # Create a model
-        model = resource.addModel(dim, dim)
-        model.setName('Solid')
+        model = resource.insertModel(
+            mesh_resource.entity(), dim, dim, "Solid model")
+
+        # Construct the topology
         session.addTopology(resource, smtk.session.mesh.Topology(
-            model.entity(), meshes))
+            model.entity(), meshes, True))
+
         model.setStringProperty('url', solid_filepath)
         model.setStringProperty('type', 'gmsh')
 
         session.declareDanglingEntity(model)
 
-        mesh_resource.associateToModel(model.entity())
-
         model.setSession(smtk.model.SessionRef(
-            resource, resource.session().sessionId()))
+            resource, session.sessionId()))
+
+        mesh_resource.associateToModel(model.entity())
 
         # transcribe
         resource.session().transcribe(model, smtk.model.SESSION_EVERYTHING, False)
-        #
+
         # Return the result
         result = init_op.createResult(
             smtk.operation.Operation.Outcome.SUCCEEDED)
-        resultModels = result.findComponent('model')
-        resultModels.setValue(model.component())
+
         created_resource = result.findResource('resource')
         created_resource.setValue(resource)
+
+        resultModels = result.findComponent('model')
+        resultModels.setValue(model.component())
+
         created = result.findComponent('created')
-        created.appendValue(model.component())
+        created.setNumberOfValues(1)
+        created.setValue(model.component())
+        created.setIsEnabled(True)
+
         result.findComponent('mesh_created').setValue(model.component())
 
         return result
