@@ -17,7 +17,7 @@
                     </DiscreteInfo>
                 </Int>
                 <File Name="solid_model" Label="Solid Model" FileFilters="Gmsh mesh files (*.msh);;All files (*,*)" Version="0" Optional="true" IsEnabledByDefault="false"></File>
-                <File Name="fluid_model" Label="Fluid Model" FileFilters="Gmsh mesh files (*.msh; *.gmsh);;All files (*,*)" Version="0" Optional="true" IsEnabledByDefault="false"></File>
+                <File Name="fluid_model" Label="Fluid Model" FileFilters="Gmsh mesh files (*.msh);;All files (*,*)" Version="0" Optional="true" IsEnabledByDefault="false"></File>
             </ItemDefinitions>
         </AttDef>
         <!-- Result -->
@@ -49,11 +49,4 @@
             </ItemDefinitions>
         </AttDef>
     </Definitions>
-    <!-- <Views>
-        <View Type="Instanced" Title="Initialize Settings" TopLevel="true" FilterByCategory="false" FilterByAdvanceLevel="true">
-            <InstancedAttributes>
-                <Att Name="Options" Type="init" />
-            </InstancedAttributes>
-        </View>
-    </Views> -->
 </SMTK_AttributeResource>

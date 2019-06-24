@@ -6,14 +6,12 @@ Initialization script for OpenIFEM workflows
 import smtk
 import os
 import sys
+import re
 
 # Add the directory containing this file to the python module search list
 import inspect  # NOQA: E402
 sys.path.insert(0, os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe()))))
-
-import internal  # NOQA: E402
-from internal.writer import openifem_writer  # NOQA: E402
 
 sys.dont_write_bytecode = True
 
@@ -26,7 +24,6 @@ if 'pybind11' == smtk.wrappingProtocol():
     import smtk.mesh
     import smtk.resource
 
-reload(openifem_writer)
 # ---------------------------------------------------
 
 
@@ -38,11 +35,88 @@ class Initialization(smtk.operation.Operation):
         return "Initialize OpenIFEM"
 
     def operateInternal(self):
-        try:
-            result = InitializeOpenIFEM(self)
-        except:
-            print('Error', self.log().convertToString())
-            raise
+        operator_spec = self.parameters()
+
+        # Find mesh files
+        solid_model_item = operator_spec.findFile('solid_model')
+        fluid_model_item = operator_spec.findFile('fluid_model')
+        dim_item = operator_spec.findInt('dimension')
+        self.dim = dim_item.value(0)
+
+        # Flags for analyses
+        solid_analysis = False
+        fluid_analysis = False
+
+        # Create new mesh session
+        self.session = smtk.session.mesh.Session.create()
+        self.resource = smtk.session.mesh.Resource.create()
+        self.resource.setSession(self.session)
+        self.resource.setName('Models')
+
+        # Create mesh resource
+        self.mesh_resource = smtk.mesh.Resource.create()
+
+        # Import the models based on the analyses
+        if solid_model_item.isEnabled():
+            solid_analysis = True
+            # Get filepath
+            solid_filepath = solid_model_item.value(0)
+            # import solid model
+            self.solid_model = self.import_model(solid_filepath, 'Solid')
+
+        if fluid_model_item.isEnabled():
+            fluid_analysis = True
+            # Get filepath
+            fluid_filepath = fluid_model_item.value(0)
+            # import solid model
+            self.fluid_model = self.import_model(fluid_filepath, 'Fluid')
+
+        # Rename and remove model entities
+        # The bigflag 100 indicates all the edges, faces and volumes
+        sub_entities = self.resource.findEntitiesOfType(0x00000100)
+        for entity in sub_entities:
+            # Remove the abundant entities, only leave the physical domains.
+            if re.match('edge', entity.name()) or re.match('face', entity.name()) or re.match('volume', entity.name()):
+                self.resource.erase(entity)
+                continue
+            # Edge entities
+            elif entity.entityFlags() == 0x00000102:
+                new_name = re.sub('Domain', 'Edge', entity.name())
+                entity.setName(new_name)
+            # Face entities
+            elif entity.entityFlags() == 0x00000104:
+                new_name = re.sub('Domain', 'Face', entity.name())
+                entity.setName(new_name)
+            # Volume entities
+            elif entity.entityFlags() == 0x00000108:
+                new_name = re.sub('Domain', 'Volume', entity.name())
+                entity.setName(new_name)
+
+        # Generate the result
+        result = self.createResult(
+            smtk.operation.Operation.Outcome.SUCCEEDED)
+
+        created_resource = result.findResource('resource')
+        created_resource.setValue(self.resource)
+
+        resultModels = result.findComponent('model')
+        created = result.findComponent('created')
+        if fluid_analysis:
+            resultModels.appendValue(self.fluid_model.component())
+
+            created.appendValue(self.fluid_model.component())
+            created.setIsEnabled(True)
+
+            result.findComponent('mesh_created').appendValue(
+                self.fluid_model.component())
+        if solid_analysis:
+            resultModels.appendValue(self.solid_model.component())
+
+            created.appendValue(self.solid_model.component())
+            created.setIsEnabled(True)
+
+            result.findComponent('mesh_created').appendValue(
+                self.solid_model.component())
 
         return result
 
@@ -62,93 +136,58 @@ class Initialization(smtk.operation.Operation):
         result = reader.read(spec, sbt_path, self.log())
         print('reader result:', result)
 
-        # Setup result definition
-        # resultDef = spec.createDefinition('test result', 'result')
-        # successDef = smtk.attribute.IntItemDefinition.New('success')
-        # resultDef.addItemDefinition(successDef)
-
         return spec
 
-
-def InitializeOpenIFEM(init_op):
-    '''
-    Entry function, called by CMB to import model file
-    '''
-
-    operator_spec = init_op.parameters()
-
-    # Find mesh files
-    solid_model_item = operator_spec.findFile('solid_model')
-    fluid_model_item = operator_spec.findFile('fluid_model')
-    dim_item = operator_spec.findInt('dimension')
-
-    dim = dim_item.value(0)
-
-    # Create new mesh session
-    session = smtk.session.mesh.Session.create()
-    if solid_model_item.isEnabled():
-        # Get filepath
-        solid_filepath = solid_model_item.value(0)
-
-        # Create mesh resource
-        resource = smtk.session.mesh.Resource.create()
-        mesh_resource = smtk.mesh.Resource.create()
-        resource.setSession(session)
+    def import_model(self, filepath, model_name):
+        # Get mesh set for old mesh
+        preexisting_meshes = self.mesh_resource.meshes()
 
         # Get the mesh resource from file
-        print('Load file from {}'.format(solid_model_item.value(0)))
+        print('Load file from {}'.format(filepath))
         smtk.io.importMesh(
-            solid_filepath, mesh_resource, 'Solid')
-        meshes = mesh_resource.meshes()
-        if not mesh_resource or not mesh_resource.isValid():
-            print('FAILED!\n')
-        # try:
-        #     mesh_resource.setName('Solid')
-        # except:
-        #     e = sys.exc_info()[0]
-        #     print('setName? %s' % e)
-        # resource.setName('Solid')
-        mesh_resource.modelResource = resource
-        resource.setMeshTessellations(mesh_resource)
+            filepath, self.mesh_resource, model_name)
+
+        # Get meshset for new mesh
+        allmeshes = self.mesh_resource.meshes()
+        newmeshes = smtk.mesh.set_difference(allmeshes, preexisting_meshes)
+
+        # If no mesh found return failue message
+        if not self.mesh_resource or not self.mesh_resource.isValid():
+            return self.createResult(smtk.operation.Operation.Outcome.FAILED)
+
+        # Set name on mesh and resource
+        self.mesh_resource.setName(model_name)
+
+        # Set association between resource and mesh resource
+        self.mesh_resource.modelResource = self.resource
+        self.resource.setMeshTessellations(self.mesh_resource)
 
         # Create a model
-        model = resource.insertModel(
-            mesh_resource.entity(), dim, dim, "Solid model")
+        model = self.resource.addModel(self.dim, self.dim)
+        model.setName(model_name)
 
         # Construct the topology
-        session.addTopology(resource, smtk.session.mesh.Topology(
-            model.entity(), meshes, True))
+        self.session.addTopology(self.resource, smtk.session.mesh.Topology(
+            model.entity(), newmeshes, False))
 
-        model.setStringProperty('url', solid_filepath)
+        model.setStringProperty('url', filepath)
         model.setStringProperty('type', 'gmsh')
 
-        session.declareDanglingEntity(model)
+        self.session.declareDanglingEntity(model)
 
         model.setSession(smtk.model.SessionRef(
-            resource, session.sessionId()))
+            self.resource, self.session.sessionId()))
 
-        mesh_resource.associateToModel(model.entity())
+        self.mesh_resource.associateToModel(model.entity())
 
         # transcribe
-        resource.session().transcribe(model, smtk.model.SESSION_EVERYTHING, False)
+        self.resource.session().transcribe(
+            model, smtk.model.SESSION_EVERYTHING, False)
 
-        # Return the result
-        result = init_op.createResult(
-            smtk.operation.Operation.Outcome.SUCCEEDED)
+        # Set string property to the model and its entities
+        model.setStringProperty('Analysis', model_name)
+        entities = model.cells()
+        for e in entities:
+            e.setStringProperty('Analysis', model_name)
 
-        created_resource = result.findResource('resource')
-        created_resource.setValue(resource)
-
-        resultModels = result.findComponent('model')
-        resultModels.setValue(model.component())
-
-        created = result.findComponent('created')
-        created.setNumberOfValues(1)
-        created.setValue(model.component())
-        created.setIsEnabled(True)
-
-        result.findComponent('mesh_created').setValue(model.component())
-
-        return result
-
-    return 1
+        return model
