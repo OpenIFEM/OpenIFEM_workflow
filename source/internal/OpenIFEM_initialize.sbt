@@ -24,26 +24,25 @@
         <include href="smtk/operation/Result.xml" />
         <AttDef Type="result(openIFEM)" BaseType="result">
             <ItemDefinitions>
-                
                 <!-- The model imported from the file. -->
-                <Resource Name="resource" HoldReference="true">
+                <Resource Name="resource" HoldReference="true" Extensible="true">
                     <Accepts>
                         <Resource Name="smtk::session::mesh::Resource" />
+                        <Resource Name="smtk::attribute::Resource" />
                     </Accepts>
                 </Resource>
                 
-                <Component Name="model">
+                <Component Name="model" Extensible="true">
                     <Accepts>
                         <Resource Name="smtk::session::mesh::Resource" Filter="" />
                     </Accepts>
                 </Component>
                 
-                <Component Name="mesh_created">
+                <Component Name="mesh_created" Extensible="true">
                     <Accepts>
                         <Resource Name="smtk::session::mesh::Resource" Filter="" />
                     </Accepts>
                 </Component>
-                
                 <Void Name="allow camera reset" IsEnabledByDefault="true" AdvanceLevel="11" />
                 
             </ItemDefinitions>

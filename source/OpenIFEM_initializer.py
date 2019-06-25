@@ -49,74 +49,77 @@ class Initialization(smtk.operation.Operation):
 
         # Create new mesh session
         self.session = smtk.session.mesh.Session.create()
-        self.resource = smtk.session.mesh.Resource.create()
-        self.resource.setSession(self.session)
-        self.resource.setName('Models')
-
-        # Create mesh resource
-        self.mesh_resource = smtk.mesh.Resource.create()
 
         # Import the models based on the analyses
         if solid_model_item.isEnabled():
             solid_analysis = True
             # Get filepath
             solid_filepath = solid_model_item.value(0)
+            # Create session resource
+            self.solid_resource = smtk.session.mesh.Resource.create()
+            self.solid_resource.setSession(self.session)
+            self.solid_resource.setName('Solid')
             # import solid model
-            self.solid_model = self.import_model(solid_filepath, 'Solid')
+            self.solid_model = self.import_model(
+                solid_filepath, self.solid_resource, 'Solid')
 
         if fluid_model_item.isEnabled():
             fluid_analysis = True
             # Get filepath
             fluid_filepath = fluid_model_item.value(0)
+            # Create session resource
+            self.fluid_resource = smtk.session.mesh.Resource.create()
+            self.fluid_resource.setSession(self.session)
+            self.fluid_resource.setName('Fluid')
             # import solid model
-            self.fluid_model = self.import_model(fluid_filepath, 'Fluid')
+            self.fluid_model = self.import_model(
+                fluid_filepath, self.fluid_resource, 'Fluid')
 
-        # Rename and remove model entities
-        # The bigflag 100 indicates all the edges, faces and volumes
-        sub_entities = self.resource.findEntitiesOfType(0x00000100)
-        for entity in sub_entities:
-            # Remove the abundant entities, only leave the physical domains.
-            if re.match('edge', entity.name()) or re.match('face', entity.name()) or re.match('volume', entity.name()):
-                self.resource.erase(entity)
-                continue
-            # Edge entities
-            elif entity.entityFlags() == 0x00000102:
-                new_name = re.sub('Domain', 'Edge', entity.name())
-                entity.setName(new_name)
-            # Face entities
-            elif entity.entityFlags() == 0x00000104:
-                new_name = re.sub('Domain', 'Face', entity.name())
-                entity.setName(new_name)
-            # Volume entities
-            elif entity.entityFlags() == 0x00000108:
-                new_name = re.sub('Domain', 'Volume', entity.name())
-                entity.setName(new_name)
+        # Read the attribute
+        # source_dir = os.path.abspath(os.path.dirname(__file__))
+        # self.att_resource = smtk.attribute.Resource.create()
+        # reader = smtk.io.AttributeReader()
+        # sbt_path = os.path.join(source_dir, 'OpenIFEM.sbt')
+        # reader.read(self.att_resource, sbt_path, self.log())
 
         # Generate the result
         result = self.createResult(
             smtk.operation.Operation.Outcome.SUCCEEDED)
 
         created_resource = result.findResource('resource')
-        created_resource.setValue(self.resource)
+        # created_resource.appendValue(self.att_resource)
 
         resultModels = result.findComponent('model')
         created = result.findComponent('created')
-        if fluid_analysis:
-            resultModels.appendValue(self.fluid_model.component())
-
-            created.appendValue(self.fluid_model.component())
-            created.setIsEnabled(True)
-
-            result.findComponent('mesh_created').appendValue(
-                self.fluid_model.component())
         if solid_analysis:
-            resultModels.appendValue(self.solid_model.component())
+            success = created_resource.appendValue(self.solid_resource)
+            print('Seccuss solid resource: {}\n'.format(success))
 
-            created.appendValue(self.solid_model.component())
+            success = resultModels.appendValue(self.solid_model.component())
+            print('Seccuss solid model: {}\n'.format(success))
+
+            success = created.appendValue(self.solid_model.component())
+            print('Seccuss solid created: {}\n'.format(success))
             created.setIsEnabled(True)
 
-            result.findComponent('mesh_created').appendValue(
+            success = result.findComponent('mesh_created').appendValue(
                 self.solid_model.component())
+            print('Seccuss solid meshcreated: {}\n'.format(success))
+
+        if fluid_analysis:
+            success = created_resource.appendValue(self.fluid_resource)
+            print('Seccuss fluid resource: {}\n'.format(success))
+
+            success = resultModels.appendValue(self.fluid_model.component())
+            print('Seccuss fluid model: {}\n'.format(success))
+
+            success = created.appendValue(self.fluid_model.component())
+            print('Seccuss fluid created: {}\n'.format(success))
+            created.setIsEnabled(True)
+
+            success = result.findComponent('mesh_created').appendValue(
+                self.fluid_model.component())
+            print('Seccuss fluid meshcreated: {}\n'.format(success))
 
         return result
 
@@ -138,37 +141,46 @@ class Initialization(smtk.operation.Operation):
 
         return spec
 
-    def import_model(self, filepath, model_name):
-        # Get mesh set for old mesh
-        preexisting_meshes = self.mesh_resource.meshes()
+    def import_model(self, filepath, resource, model_name):
+        # Create mesh resource
+        mesh_resource = smtk.mesh.Resource.create()
 
         # Get the mesh resource from file
         print('Load file from {}'.format(filepath))
         smtk.io.importMesh(
-            filepath, self.mesh_resource, model_name)
+            filepath, mesh_resource, model_name)
 
         # Get meshset for new mesh
-        allmeshes = self.mesh_resource.meshes()
-        newmeshes = smtk.mesh.set_difference(allmeshes, preexisting_meshes)
+        meshes = mesh_resource.meshes()
+
+        # Remove the mesh without domains
+        meshes_without_domains = []
+        for i in range(meshes.size()):
+            submesh = meshes.subset(i)
+            if len(submesh.domains()) == 0:
+                meshes_without_domains.append(submesh)
+
+        for mesh_without_domain in meshes_without_domains:
+            mesh_resource.removeMeshes(mesh_without_domain)
 
         # If no mesh found return failue message
-        if not self.mesh_resource or not self.mesh_resource.isValid():
+        if not mesh_resource or not mesh_resource.isValid():
             return self.createResult(smtk.operation.Operation.Outcome.FAILED)
 
         # Set name on mesh and resource
-        self.mesh_resource.setName(model_name)
+        mesh_resource.setName(model_name)
 
         # Set association between resource and mesh resource
-        self.mesh_resource.modelResource = self.resource
-        self.resource.setMeshTessellations(self.mesh_resource)
+        mesh_resource.modelResource = resource
+        resource.setMeshTessellations(mesh_resource)
 
         # Create a model
-        model = self.resource.addModel(self.dim, self.dim)
+        model = resource.addModel(self.dim, self.dim)
         model.setName(model_name)
 
         # Construct the topology
-        self.session.addTopology(self.resource, smtk.session.mesh.Topology(
-            model.entity(), newmeshes, False))
+        self.session.addTopology(resource, smtk.session.mesh.Topology(
+            model.entity(), meshes, False))
 
         model.setStringProperty('url', filepath)
         model.setStringProperty('type', 'gmsh')
@@ -176,12 +188,12 @@ class Initialization(smtk.operation.Operation):
         self.session.declareDanglingEntity(model)
 
         model.setSession(smtk.model.SessionRef(
-            self.resource, self.session.sessionId()))
+            resource, self.session.sessionId()))
 
-        self.mesh_resource.associateToModel(model.entity())
+        mesh_resource.associateToModel(model.entity())
 
         # transcribe
-        self.resource.session().transcribe(
+        resource.session().transcribe(
             model, smtk.model.SESSION_EVERYTHING, False)
 
         # Set string property to the model and its entities
@@ -189,5 +201,22 @@ class Initialization(smtk.operation.Operation):
         entities = model.cells()
         for e in entities:
             e.setStringProperty('Analysis', model_name)
+
+        # Rename model entities
+        # The bitflag 100 indicates all the edges, faces and volumes
+        sub_entities = resource.findEntitiesOfType(0x00000100)
+        for entity in sub_entities:
+            # Edge entities
+            if entity.entityFlags() == 0x00000102:
+                new_name = re.sub('Domain', 'Edge', entity.name())
+                entity.setName(new_name)
+            # Face entities
+            elif entity.entityFlags() == 0x00000104:
+                new_name = re.sub('Domain', 'Face', entity.name())
+                entity.setName(new_name)
+            # Volume entities
+            elif entity.entityFlags() == 0x00000108:
+                new_name = re.sub('Domain', 'Volume', entity.name())
+                entity.setName(new_name)
 
         return model
