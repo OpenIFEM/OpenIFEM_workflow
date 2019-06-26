@@ -23,6 +23,7 @@ if 'pybind11' == smtk.wrappingProtocol():
     import smtk.session.mesh
     import smtk.mesh
     import smtk.resource
+    import smtk.view
 
 # ---------------------------------------------------
 
@@ -95,13 +96,11 @@ class Initialization(smtk.operation.Operation):
             analyses_def.itemDefinition(1).setIsEnabledByDefault(True)
         if (fluid_analysis):
             analyses_def.itemDefinition(0).setIsEnabledByDefault(True)
+
+        # Print out views and definitions in the attribute resource
         views = self.att_resource.views()
         for v in views:
             print('View: %s' % v)
-        # fluid_bc_att = self.att_resource.findDefinition(
-        #     'fluid_boundary_conditions')
-        # for i in range(fluid_bc_att.numberOfItemDefinitions()):
-        #     print('item: %s' % fluid_bc_att.itemDefinition(i).name())
         defs = self.att_resource.definitions()
         for d in defs:
             print('Def: %s' % d.type())
@@ -116,9 +115,15 @@ class Initialization(smtk.operation.Operation):
                 'simulation').itemDefinition(7).setNumberOfRequiredValues(3)
             # Change entity filter
             self.att_resource.findDefinition(
+                'fluid_boundary_conditions').clearLocalAssociationRule()
+            self.att_resource.findDefinition(
                 'fluid_boundary_conditions').setLocalAssociationMask(0x00000104)
             self.att_resource.findDefinition(
+                'solid_boundary_conditions').clearLocalAssociationRule()
+            self.att_resource.findDefinition(
                 'solid_boundary_conditions').setLocalAssociationMask(0x00000104)
+            self.att_resource.findDefinition(
+                'solid_materials_conditions').clearLocalAssociationRule()
             self.att_resource.findDefinition(
                 'solid_materials').setLocalAssociationMask(0x00000108)
 
