@@ -107,6 +107,12 @@
 								<Cat>Fluid</Cat>
 							</Categories>
 						</Double>
+						<Double Name="z" Label="z" NumberOfRequiredValues="1" AdvanceLevel="0" Optional="true" IsEnabledByDefault="false">
+							<DefaultValue>0</DefaultValue>
+							<Categories>
+								<Cat>Fluid</Cat>
+							</Categories>
+						</Double>
 					</ItemDefinitions>
 				</Group>
 			</ItemDefinitions>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <SMTK_AttributeResource Version="3">
+    <include href="smtk/operation/Result.xml" />
     <Definitions>
         <AttDef Type="initialize" BaseType="operation" Label="Initialize OpenIFEM" Version="1">
             <BriefDescription>
@@ -21,7 +22,6 @@
             </ItemDefinitions>
         </AttDef>
         <!-- Result -->
-        <include href="smtk/operation/Result.xml" />
         <AttDef Type="result(openIFEM)" BaseType="result">
             <ItemDefinitions>
                 <!-- The model imported from the file. -->

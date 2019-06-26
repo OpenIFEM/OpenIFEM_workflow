@@ -25,8 +25,7 @@
 				<View Title="General" />
 			</Views>
 		</View>
-		<View Type="Analysis" Title="Analysis" Label="Analysis" AnalysisAttributeName="analysis" AnalysisAttributeType="analysis">
-		</View>
+		<View Type="Analysis" Title="Analysis" Label="Analysis" AnalysisAttributeName="analysis" AnalysisAttributeType="analysis"></View>
 		<View Type="Instanced" Title="General" Label="General">
 			<InstancedAttributes>
 				<Att Name="simulation" Type="simulation" />
@@ -62,7 +61,7 @@
 				<Att Name="solid" Type="solid" />
 			</InstancedAttributes>
 		</View>
-		<View Type="Attribute" Title="Solid Boundary Conditions" ModelEntityFilter="e">
+		<View Type="Attribute" Title="Solid Boundary Conditions" ModelEntityFilter="f">
 			<AttributeTypes>
 				<Att Name="solid_boundary_conditions" Type="solid_boundary_conditions" />
 			</AttributeTypes>

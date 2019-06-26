@@ -107,6 +107,11 @@
 								<Cat>Solid</Cat>
 							</Categories>
 						</Void>
+						<Void Name="z" label="z" Optional="true" IsEnabledByDefault="false">
+							<Categories>
+								<Cat>Solid</Cat>
+							</Categories>
+						</Void>
 					</ItemDefinitions>
 				</Group>
 			</ItemDefinitions>

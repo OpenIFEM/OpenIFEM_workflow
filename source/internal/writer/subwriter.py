@@ -143,6 +143,7 @@ class fluid_dirichlet_subsection(entity_subsection):
         bc_values = str()
         x_component = 0x1
         y_component = 0x2
+        z_component = 0x4
         # Every BC is an individual attribute, need to put them in a list
         fluid_bc_atts = self.sim_atts.findAttributes(
             'fluid_dirichlet')
@@ -165,9 +166,10 @@ class fluid_dirichlet_subsection(entity_subsection):
             # Get the components and values
             item_x = bc_att.itemAtPath('velocity/x', '/')
             item_y = bc_att.itemAtPath('velocity/y', '/')
+            item_z = bc_att.itemAtPath('velocity/z', '/')
             components = 0x0
             components |= x_component * item_x.isEnabled() | y_component * \
-                item_y.isEnabled()
+                item_y.isEnabled() | z_component * item_z.isEnabled()
             # Add component mask to bc_component
             bc_components.extend([components for i in range(sub_n_bcs)])
             # Get the values
@@ -176,6 +178,8 @@ class fluid_dirichlet_subsection(entity_subsection):
                 values.append(item_x.value(0))
             if (components & y_component):
                 values.append(item_y.value(0))
+            if (components & z_component):
+                values.append(item_z.value(0))
             # Add values
             for j in range(sub_n_bcs):
                 bc_values += " ".join("{}, ".format(i) for i in values)
@@ -310,6 +314,7 @@ class solid_dirichlet_subsection(entity_subsection):
         bc_components = list()
         x_component = 0x1
         y_component = 0x2
+        z_component = 0x4
         # Every BC is an individual attribute, need to put them in a list
         solid_bc_atts = self.sim_atts.findAttributes(
             'solid_dirichlet')
@@ -332,9 +337,10 @@ class solid_dirichlet_subsection(entity_subsection):
             # Get the components and values
             item_x = bc_att.itemAtPath('directions/x', '/')
             item_y = bc_att.itemAtPath('directions/y', '/')
+            item_z = bc_att.itemAtPath('directions/z', '/')
             components = 0x0
             components |= x_component * item_x.isEnabled() | y_component * \
-                item_y.isEnabled()
+                item_y.isEnabled() + z_component * item_z.isEnabled()
             # Add component mask to bc_component
             bc_components.extend([components for i in range(sub_n_bcs)])
         # Add properties

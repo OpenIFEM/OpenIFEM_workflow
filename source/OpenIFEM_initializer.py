@@ -76,50 +76,89 @@ class Initialization(smtk.operation.Operation):
                 fluid_filepath, self.fluid_resource, 'Fluid')
 
         # Read the attribute
-        # source_dir = os.path.abspath(os.path.dirname(__file__))
-        # self.att_resource = smtk.attribute.Resource.create()
-        # reader = smtk.io.AttributeReader()
-        # sbt_path = os.path.join(source_dir, 'OpenIFEM.sbt')
-        # reader.read(self.att_resource, sbt_path, self.log())
+        source_dir = os.path.abspath(os.path.dirname(__file__))
+        self.att_resource = smtk.attribute.Resource.create()
+        reader = smtk.io.AttributeReader()
+        sbt_path = os.path.join(source_dir, 'OpenIFEM.sbt')
+        reader.read(self.att_resource, sbt_path, True, self.log())
+
+        # Change the name
+        self.att_resource.setName('Parameters')
+
+        analyses = self.att_resource.analyses()
+        analyses.buildAnalysesDefinition(
+            self.att_resource, 'analysis', 'Analysis')
+        analyses_def = self.att_resource.findDefinition('analysis')
+
+        # Enable the analyses based on imported models
+        if (solid_analysis):
+            analyses_def.itemDefinition(1).setIsEnabledByDefault(True)
+        if (fluid_analysis):
+            analyses_def.itemDefinition(0).setIsEnabledByDefault(True)
+        views = self.att_resource.views()
+        for v in views:
+            print('View: %s' % v)
+        # fluid_bc_att = self.att_resource.findDefinition(
+        #     'fluid_boundary_conditions')
+        # for i in range(fluid_bc_att.numberOfItemDefinitions()):
+        #     print('item: %s' % fluid_bc_att.itemDefinition(i).name())
+        defs = self.att_resource.definitions()
+        for d in defs:
+            print('Def: %s' % d.type())
+
+        # Change the gravity component and entity filters according to the dimension
+        if self.dim == 3:
+            # Change default dimension
+            self.att_resource.findDefinition(
+                'simulation').itemDefinition(0).setDefaultDiscreteIndex(1)
+            # Change gravity input
+            self.att_resource.findDefinition(
+                'simulation').itemDefinition(7).setNumberOfRequiredValues(3)
+            # Change entity filter
+            self.att_resource.findDefinition(
+                'fluid_boundary_conditions').setLocalAssociationMask(0x00000104)
+            self.att_resource.findDefinition(
+                'solid_boundary_conditions').setLocalAssociationMask(0x00000104)
+            self.att_resource.findDefinition(
+                'solid_materials').setLocalAssociationMask(0x00000108)
+
+        if self.dim == 2:
+            # Remove the z component in BCs (actually hide it)
+            self.att_resource.findDefinition('fluid_dirichlet').itemDefinition(
+                0).itemDefinition(2).setAdvanceLevel(11)
+            self.att_resource.findDefinition('solid_dirichlet').itemDefinition(
+                0).itemDefinition(2).setAdvanceLevel(11)
 
         # Generate the result
         result = self.createResult(
             smtk.operation.Operation.Outcome.SUCCEEDED)
 
         created_resource = result.findResource('resource')
-        # created_resource.appendValue(self.att_resource)
+        created_resource.appendValue(self.att_resource)
 
         resultModels = result.findComponent('model')
         created = result.findComponent('created')
         if solid_analysis:
-            success = created_resource.appendValue(self.solid_resource)
-            print('Seccuss solid resource: {}\n'.format(success))
+            created_resource.appendValue(self.solid_resource)
 
-            success = resultModels.appendValue(self.solid_model.component())
-            print('Seccuss solid model: {}\n'.format(success))
+            resultModels.appendValue(self.solid_model.component())
 
-            success = created.appendValue(self.solid_model.component())
-            print('Seccuss solid created: {}\n'.format(success))
+            created.appendValue(self.solid_model.component())
             created.setIsEnabled(True)
 
-            success = result.findComponent('mesh_created').appendValue(
+            result.findComponent('mesh_created').appendValue(
                 self.solid_model.component())
-            print('Seccuss solid meshcreated: {}\n'.format(success))
 
         if fluid_analysis:
-            success = created_resource.appendValue(self.fluid_resource)
-            print('Seccuss fluid resource: {}\n'.format(success))
+            created_resource.appendValue(self.fluid_resource)
 
-            success = resultModels.appendValue(self.fluid_model.component())
-            print('Seccuss fluid model: {}\n'.format(success))
+            resultModels.appendValue(self.fluid_model.component())
 
-            success = created.appendValue(self.fluid_model.component())
-            print('Seccuss fluid created: {}\n'.format(success))
+            created.appendValue(self.fluid_model.component())
             created.setIsEnabled(True)
 
-            success = result.findComponent('mesh_created').appendValue(
+            result.findComponent('mesh_created').appendValue(
                 self.fluid_model.component())
-            print('Seccuss fluid meshcreated: {}\n'.format(success))
 
         return result
 
@@ -208,15 +247,18 @@ class Initialization(smtk.operation.Operation):
         for entity in sub_entities:
             # Edge entities
             if entity.entityFlags() == 0x00000102:
-                new_name = re.sub('Domain', 'Edge', entity.name())
+                new_name = re.sub('Domain', model_name +
+                                  ' Edge', entity.name())
                 entity.setName(new_name)
             # Face entities
             elif entity.entityFlags() == 0x00000104:
-                new_name = re.sub('Domain', 'Face', entity.name())
+                new_name = re.sub('Domain', model_name +
+                                  ' Face', entity.name())
                 entity.setName(new_name)
             # Volume entities
             elif entity.entityFlags() == 0x00000108:
-                new_name = re.sub('Domain', 'Volume', entity.name())
+                new_name = re.sub('Domain', model_name +
+                                  ' Volume', entity.name())
                 entity.setName(new_name)
 
         return model
