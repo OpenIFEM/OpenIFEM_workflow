@@ -117,15 +117,21 @@ class Initialization(smtk.operation.Operation):
             self.att_resource.findDefinition(
                 'fluid_boundary_conditions').clearLocalAssociationRule()
             self.att_resource.findDefinition(
-                'fluid_boundary_conditions').setLocalAssociationMask(0x00000104)
+                'fluid_boundary_conditions').createLocalAssociationRule()
+            self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
+            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Fluid' }]", True)
             self.att_resource.findDefinition(
                 'solid_boundary_conditions').clearLocalAssociationRule()
             self.att_resource.findDefinition(
-                'solid_boundary_conditions').setLocalAssociationMask(0x00000104)
+                'solid_boundary_conditions').createLocalAssociationRule()
+            self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
+            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Solid' }]", True)
             self.att_resource.findDefinition(
-                'solid_materials_conditions').clearLocalAssociationRule()
+                'solid_materials').clearLocalAssociationRule()
             self.att_resource.findDefinition(
-                'solid_materials').setLocalAssociationMask(0x00000108)
+                'solid_materials').createLocalAssociationRule()
+            self.att_resource.findDefinition('solid_materials').localAssociationRule(
+            ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
 
         if self.dim == 2:
             # Remove the z component in BCs (actually hide it)
@@ -133,6 +139,25 @@ class Initialization(smtk.operation.Operation):
                 0).itemDefinition(2).setAdvanceLevel(11)
             self.att_resource.findDefinition('solid_dirichlet').itemDefinition(
                 0).itemDefinition(2).setAdvanceLevel(11)
+            # Change entity filter
+            self.att_resource.findDefinition(
+                'fluid_boundary_conditions').clearLocalAssociationRule()
+            self.att_resource.findDefinition(
+                'fluid_boundary_conditions').createLocalAssociationRule()
+            self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
+            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Fluid' }]", True)
+            self.att_resource.findDefinition(
+                'solid_boundary_conditions').clearLocalAssociationRule()
+            self.att_resource.findDefinition(
+                'solid_boundary_conditions').createLocalAssociationRule()
+            self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
+            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Solid' }]", True)
+            self.att_resource.findDefinition(
+                'solid_materials').clearLocalAssociationRule()
+            self.att_resource.findDefinition(
+                'solid_materials').createLocalAssociationRule()
+            self.att_resource.findDefinition('solid_materials').localAssociationRule(
+            ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
 
         # Generate the result
         result = self.createResult(
