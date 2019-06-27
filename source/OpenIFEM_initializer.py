@@ -83,6 +83,14 @@ class Initialization(smtk.operation.Operation):
         sbt_path = os.path.join(source_dir, 'OpenIFEM.sbt')
         reader.read(self.att_resource, sbt_path, True, self.log())
 
+        # Set dimension to read-only
+        general_view = self.att_resource.findView('General')
+        simulation_comp = general_view.details().child(0).child(0)
+        item_comp = simulation_comp.addChild('ItemViews').addChild('View')
+        item_comp.setAttribute('Item', 'dimension')
+        item_comp.setAttribute('Type','Default')
+        item_comp.setAttribute('ReadOnly', 'true')
+
         # Change the name
         self.att_resource.setName('Parameters')
 
@@ -133,7 +141,7 @@ class Initialization(smtk.operation.Operation):
             self.att_resource.findDefinition('solid_materials').localAssociationRule(
             ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
 
-        if self.dim == 2:
+        elif self.dim == 2:
             # Remove the z component in BCs (actually hide it)
             self.att_resource.findDefinition('fluid_dirichlet').itemDefinition(
                 0).itemDefinition(2).setAdvanceLevel(11)
