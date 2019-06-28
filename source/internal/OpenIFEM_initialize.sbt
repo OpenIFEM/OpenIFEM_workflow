@@ -11,7 +11,7 @@
                 the workspace for OpenIFEM.
             </DetailedDescription>
             <ItemDefinitions>
-                <Int Name="dimension" Label="Dimension">
+                <Int Name="dimension" Label="User Specified Dimension" Optional = "true" IsEnabledByDefault="false">
                     <DiscreteInfo DefaultIndex="0">
                         <Value Enum="2">2</Value>
                         <Value Enum="3">3</Value>

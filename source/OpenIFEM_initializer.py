@@ -42,7 +42,7 @@ class Initialization(smtk.operation.Operation):
         solid_model_item = operator_spec.findFile('solid_model')
         fluid_model_item = operator_spec.findFile('fluid_model')
         dim_item = operator_spec.findInt('dimension')
-        self.dim = dim_item.value(0)
+        self.dim = dim_item.value(0) if dim_item.isEnabled() else 0
 
         # Flags for analyses
         solid_analysis = False
@@ -84,12 +84,13 @@ class Initialization(smtk.operation.Operation):
         reader.read(self.att_resource, sbt_path, True, self.log())
 
         # Set dimension to read-only
-        general_view = self.att_resource.findView('General')
-        simulation_comp = general_view.details().child(0).child(0)
-        item_comp = simulation_comp.addChild('ItemViews').addChild('View')
-        item_comp.setAttribute('Item', 'dimension')
-        item_comp.setAttribute('Type','Default')
-        item_comp.setAttribute('ReadOnly', 'true')
+        if int(self.dim) != 0:
+            general_view = self.att_resource.findView('General')
+            simulation_comp = general_view.details().child(0).child(0)
+            item_comp = simulation_comp.addChild('ItemViews').addChild('View')
+            item_comp.setAttribute('Item', 'dimension')
+            item_comp.setAttribute('Type','Default')
+            item_comp.setAttribute('ReadOnly', 'true')
 
         # Change the name
         self.att_resource.setName('Parameters')
@@ -126,20 +127,38 @@ class Initialization(smtk.operation.Operation):
                 'fluid_boundary_conditions').clearLocalAssociationRule()
             self.att_resource.findDefinition(
                 'fluid_boundary_conditions').createLocalAssociationRule()
-            self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
-            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Fluid' }]", True)
+            if fluid_analysis:
+                self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Fluid' }]", True)
+            else:
+                self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "face", True)
             self.att_resource.findDefinition(
-                'solid_boundary_conditions').clearLocalAssociationRule()
+                    'solid_boundary_conditions').clearLocalAssociationRule()
             self.att_resource.findDefinition(
-                'solid_boundary_conditions').createLocalAssociationRule()
-            self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
-            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Solid' }]", True)
+                    'solid_boundary_conditions').createLocalAssociationRule()
             self.att_resource.findDefinition(
-                'solid_materials').clearLocalAssociationRule()
+                    'solid_boundary_conditions').clearLocalAssociationRule()
             self.att_resource.findDefinition(
-                'solid_materials').createLocalAssociationRule()
-            self.att_resource.findDefinition('solid_materials').localAssociationRule(
-            ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
+                    'solid_boundary_conditions').createLocalAssociationRule()
+            if solid_analysis:
+                self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
+                self.att_resource.findDefinition(
+                    'solid_materials').clearLocalAssociationRule()
+                self.att_resource.findDefinition(
+                    'solid_materials').createLocalAssociationRule()
+                self.att_resource.findDefinition('solid_materials').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "volume[ string { 'Analysis' = 'Solid' }]", True)
+            else:
+                self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "face", True)
+                self.att_resource.findDefinition(
+                    'solid_materials').clearLocalAssociationRule()
+                self.att_resource.findDefinition(
+                    'solid_materials').createLocalAssociationRule()
+                self.att_resource.findDefinition('solid_materials').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "volume", True)
 
         elif self.dim == 2:
             # Remove the z component in BCs (actually hide it)
@@ -148,24 +167,26 @@ class Initialization(smtk.operation.Operation):
             self.att_resource.findDefinition('solid_dirichlet').itemDefinition(
                 0).itemDefinition(2).setAdvanceLevel(11)
             # Change entity filter
-            self.att_resource.findDefinition(
-                'fluid_boundary_conditions').clearLocalAssociationRule()
-            self.att_resource.findDefinition(
-                'fluid_boundary_conditions').createLocalAssociationRule()
-            self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
-            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Fluid' }]", True)
-            self.att_resource.findDefinition(
-                'solid_boundary_conditions').clearLocalAssociationRule()
-            self.att_resource.findDefinition(
-                'solid_boundary_conditions').createLocalAssociationRule()
-            self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
-            ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Solid' }]", True)
-            self.att_resource.findDefinition(
-                'solid_materials').clearLocalAssociationRule()
-            self.att_resource.findDefinition(
-                'solid_materials').createLocalAssociationRule()
-            self.att_resource.findDefinition('solid_materials').localAssociationRule(
-            ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
+            if fluid_analysis:
+                self.att_resource.findDefinition(
+                    'fluid_boundary_conditions').clearLocalAssociationRule()
+                self.att_resource.findDefinition(
+                    'fluid_boundary_conditions').createLocalAssociationRule()
+                self.att_resource.findDefinition('fluid_boundary_conditions').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Fluid' }]", True)
+            if solid_analysis:
+                self.att_resource.findDefinition(
+                    'solid_boundary_conditions').clearLocalAssociationRule()
+                self.att_resource.findDefinition(
+                    'solid_boundary_conditions').createLocalAssociationRule()
+                self.att_resource.findDefinition('solid_boundary_conditions').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "edge[ string { 'Analysis' = 'Solid' }]", True)
+                self.att_resource.findDefinition(
+                    'solid_materials').clearLocalAssociationRule()
+                self.att_resource.findDefinition(
+                    'solid_materials').createLocalAssociationRule()
+                self.att_resource.findDefinition('solid_materials').localAssociationRule(
+                ).setAcceptsEntries('smtk::model::Resource', "face[ string { 'Analysis' = 'Solid' }]", True)
 
         # Generate the result
         result = self.createResult(
@@ -226,6 +247,17 @@ class Initialization(smtk.operation.Operation):
         print('Load file from {}'.format(filepath))
         smtk.io.importMesh(
             filepath, mesh_resource, model_name)
+        
+        # Get dimension
+        if self.dim == 0:
+            self.dim = smtk.mesh.highestDimension(mesh_resource.meshes())
+        else:
+            model_dim = smtk.mesh.highestDimension(mesh_resource.meshes())
+            if model_dim != self.dim:
+                raise Exception("Solid model and fluid model dimensions are inconsistent!")
+        print('{}\'s dimension is {}'.format(model_name, self.dim))
+        if int(self.dim) < 2:
+            raise Exception("1D models are not supported!")
 
         # Get meshset for new mesh
         meshes = mesh_resource.meshes()
