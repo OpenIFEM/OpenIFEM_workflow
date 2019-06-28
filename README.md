@@ -1,6 +1,6 @@
 # OpenIFEM_workflow
 
-This is a CMB (https://gitlab.kitware.com/cmb) workflow for OpenIFEM (https://github.com/OpenIFEM/OpenIFEM).
+This is a [CMB](https://gitlab.kitware.com/cmb) workflow for [OpenIFEM](https://github.com/OpenIFEM/OpenIFEM).
 
 *Note: Since OpenIFEM is a library, there is not a universal binrary file that handles all the simulation settings, at least for now. You may still need to write the c++ program to execute a specific simulation.*
 
