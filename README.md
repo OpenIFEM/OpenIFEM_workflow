@@ -10,20 +10,14 @@ You can download CMB binray at (https://www.computationalmodelbuilder.org/downlo
 
 If you would like to build CMB from source, take a look at CMB superbuild: (https://gitlab.kitware.com/cmb/cmb-superbuild)
 
-
-## How to use `OpenIFEM.sbt` file
+## Workflow
+### Use `OpenIFEM.sbt` file
 
 1. In CMB modelbuilder, import the parameters template by clicking Open and select `OpenIFEM.sbt.`
 
 2. Load model and edit the simulation specs in attribute editor.
 
-3. Click on `export simulation` and select OpenIFEM.py file to export parameters file.
-
-4. Run your simulation.
-
-5. You can visualize the results by enablig `vtkpostprocesingmodule` in module manager.
-
-## How to initialize an OpenIFEM project with `OpenIFEM.initializer`
+### Or initialize an OpenIFEM project with `OpenIFEM.initializer`
 
 1. In modeulbuilder, click on `import operation` and import OpenIFEM_initializer.py
 
@@ -34,3 +28,11 @@ If you would like to build CMB from source, take a look at CMB superbuild: (http
 4. The initializer will choose the analysis based on whether you imported a solid model (solid analysis), fluid model (fluid analysis), or both (FSI analysis). The dimension setting in the attribute resource will be frozen once you create the workflow.
 
 5. You can assign solid and fluid BC, and solid material on the corresponding models, set the parameters and export the parameters file.
+
+### Export, run, and postprocess your simulation
+
+1. Click on `export simulation` and select OpenIFEM_exporter.py file to export parameters file.
+
+2. Run your simulation.
+
+3. You can visualize the results by enablig `vtkpostprocesingmodule` in module manager.
